@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Define a structure to store the parsed values
+struct ParsedData {
+    char customerID[20];
+    float latitude;
+    float longitude;
+    char direction;
+    float accelerometerX;
+    float accelerometerY;
+    int day;
+    int month;
+    int year;
+    char time[10];
+    char ampm[3];
+    char dataStatus; // A for current data, H for history data
+};
+
+// Function to parse CSV data and store values in the structure
+void parseCSV(char *data, struct ParsedData *result) {
+    sscanf(data, "#%19[^,],%f,%f,%c,%f,%f,%d,%d,%d,%[^,],%2[^,],%c#",
+           result->customerID, &result->latitude, &result->longitude,
+           &result->direction, &result->accelerometerX, &result->accelerometerY,
+           &result->day, &result->month, &result->year, result->time,
+           result->ampm, &result->dataStatus);
+}
+
+int main() {
+    // Example CSV data
+    char csvData[] = "#123456UNI,123.456,342.785,E,12.5,34.6,01,01,983,01:23:34,AM,A#";
+
+    // Create a structure to store parsed data
+    struct ParsedData parsedData;
+
+    // Parse CSV data and store values in the structure
+    parseCSV(csvData, &parsedData);
+
+    // Print the parsed values
+    printf("Customer ID: %s\n", parsedData.customerID);
+    printf("Latitude: %f\n", parsedData.latitude);
+    printf("Longitude: %f\n", parsedData.longitude);
+    printf("Direction: %c\n", parsedData.direction);
+    printf("Accelerometer X: %f\n", parsedData.accelerometerX);
+    printf("Accelerometer Y: %f\n", parsedData.accelerometerY);
+    printf("Day: %d\n", parsedData.day);
+    printf("Month: %d\n", parsedData.month);
+    printf("Year: %d\n", parsedData.year);
+    printf("Time: %s\n", parsedData.time);
+    printf("AM/PM: %s\n", parsedData.ampm);
+    printf("Data Status: %c\n", parsedData.dataStatus);
+
+    return 0;
+}
